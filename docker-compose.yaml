@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  nginx-1:
+  nginx-2:
+  php-1:
+  php-2:
+  db:

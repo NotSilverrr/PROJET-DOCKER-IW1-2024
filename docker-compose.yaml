@@ -2,7 +2,16 @@ version: '3.1'
 
 services:
   nginx-1:
+    image: nginx
   nginx-2:
+    image: nginx
   php-1:
+    build:
+    context: ./app1
+    dockerfile: Dockerfile
   php-2:
+    build:
+    context: ./app2
+    dockerfile: Dockerfile
   db:
+    image: mysql

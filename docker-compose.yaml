@@ -3,15 +3,50 @@ version: '3.1'
 services:
   nginx-1:
     image: nginx
+    restart: always
+    ports:
+      - 8086:80
+    depends_on:
+      - php-1
   nginx-2:
     image: nginx
+    restart: always
+    ports:
+      - 8087:80
+    depends_on:
+      - php-2
   php-1:
+    restart: always
     build:
-    context: ./app1
-    dockerfile: Dockerfile
+      context: ./app1
+      dockerfile: Dockerfile
+    ports:
+      - 5086:9000
+    depends_on:
+      - db
+    volumes:
+      - ./app1:/var/www/html
   php-2:
+    restart: always
     build:
-    context: ./app2
-    dockerfile: Dockerfile
+      context: ./app2
+      dockerfile: Dockerfile
+    ports:
+      - 5087:9000
+    depends_on:
+      - db
+    volumes:
+      - ./app2:/var/www/html
   db:
     image: mysql
+    restart: always
+    environment:
+      MYSQL_USER: wordpress
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: toto
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

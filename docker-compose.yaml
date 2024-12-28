@@ -10,6 +10,7 @@ services:
       - php-1
     volumes:
       - ./app1/nginx.conf:/etc/nginx/conf.d/default.conf
+
   nginx-2:
     image: nginx
     restart: always
@@ -19,6 +20,7 @@ services:
       - php-2
     volumes:
       - ./app2/nginx.conf:/etc/nginx/conf.d/default.conf
+
   php-1:
     restart: always
     build:
@@ -27,8 +29,10 @@ services:
     ports:
       - 5086:9000
     depends_on:
-      - db
-    
+      - mysql
+    command: >
+      sh -c "php artisan migrate:fresh --seed && php-fpm" 
+
   php-2:
     restart: always
     build:
@@ -37,16 +41,20 @@ services:
     ports:
       - 5087:9000
     depends_on:
-      - db
-    
-  db:
+      - mysql
+    command: >
+      sh -c "php artisan migrate:fresh --seed && php-fpm"  
+         
+  mysql:
     image: mysql
     restart: always
     environment:
-      MYSQL_USER: wordpress
-      MYSQL_DATABASE: test
-      MYSQL_PASSWORD: toto
+      MYSQL_USER: laravel
+      MYSQL_DATABASE: example_app
+      MYSQL_PASSWORD: laravel
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
     volumes:
       - dbdata:/var/lib/mysql
 

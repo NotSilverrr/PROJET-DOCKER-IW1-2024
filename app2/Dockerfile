@@ -13,9 +13,8 @@ COPY . /var/www/html/app2
 
 WORKDIR /var/www/html/app2
 
-RUN chown -R www-data:www-data /var/www/html/app2 \
+RUN chown -R www-data:www-data /var/www \
  && chmod -R 775 /var/www/html/app2/storage /var/www/html/app2/bootstrap/cache \
- && chown -R www-data:www-data /var/www \
  && chmod -R 775 /var/www
 
 USER www-data
@@ -27,5 +26,7 @@ RUN php artisan key:generate
 RUN npm install
 RUN npm run build
 
+COPY ./run.sh /tmp
+
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["/tmp/run.sh"]

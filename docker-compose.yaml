@@ -10,6 +10,7 @@ services:
       - php-1
     volumes:
       - ./app1/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./app1:/var/www/html/app1
 
   nginx-2:
     image: nginx
@@ -20,12 +21,15 @@ services:
       - php-2
     volumes:
       - ./app2/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./app2:/var/www/html/app2
 
   php-1:
     restart: always
     build:
       context: ./app1
       dockerfile: Dockerfile
+    volumes:
+      - ./app1:/var/www/html/app1    
     ports:
       - 5086:9000
     depends_on:
@@ -36,6 +40,8 @@ services:
     build:
       context: ./app2
       dockerfile: Dockerfile
+    volumes:
+      - ./app2:/var/www/html/app2
     ports:
       - 5087:9000
     depends_on:

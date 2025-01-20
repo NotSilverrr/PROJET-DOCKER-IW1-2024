@@ -9,22 +9,14 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY . /var/www/html/app2
+COPY ./composer.json /var/www/html/app2/composer.json
+COPY ./package.json /var/www/html/app2/package.json
 
 WORKDIR /var/www/html/app2
 
-RUN chown -R www-data:www-data /var/www \
- && chmod -R 775 /var/www/html/app2/storage /var/www/html/app2/bootstrap/cache \
- && chmod -R 775 /var/www
+RUN chown -R www-data:www-data /var/www
 
 USER www-data
-
-RUN composer update && composer install --no-dev --optimize-autoloader
-
-RUN php artisan key:generate
-
-RUN npm install
-RUN npm run build
 
 COPY ./run.sh /tmp
 

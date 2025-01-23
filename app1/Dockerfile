@@ -21,4 +21,4 @@ USER www-data
 COPY ./run.sh /tmp
 
 EXPOSE 9000
-ENTRYPOINT ["/tmp/run.sh"]
+CMD ["/tmp/run.sh"]
